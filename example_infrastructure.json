@@ -1,0 +1,144 @@
+{
+  "objects": [
+    {
+      "id": "app_py",
+      "type": "file",
+      "name": "app.py",
+      "properties": {
+        "description": "Главный файл приложения Flask"
+      },
+      "created_at": "2025-01-15T10:00:00"
+    },
+    {
+      "id": "database_py",
+      "type": "file",
+      "name": "database.py",
+      "properties": {
+        "description": "Модуль для работы с базой данных"
+      },
+      "created_at": "2025-01-15T10:05:00"
+    },
+    {
+      "id": "app_container",
+      "type": "docker_container",
+      "name": "Flask Application Container",
+      "properties": {
+        "description": "Docker контейнер с Flask приложением",
+        "port": "5000"
+      },
+      "created_at": "2025-01-15T10:10:00"
+    },
+    {
+      "id": "postgres_db",
+      "type": "database",
+      "name": "PostgreSQL Database",
+      "properties": {
+        "description": "Основная база данных приложения",
+        "version": "15.2"
+      },
+      "created_at": "2025-01-15T10:15:00"
+    },
+    {
+      "id": "nginx_proxy",
+      "type": "docker_container",
+      "name": "Nginx Reverse Proxy",
+      "properties": {
+        "description": "Обратный прокси сервер",
+        "port": "80"
+      },
+      "created_at": "2025-01-15T10:20:00"
+    },
+    {
+      "id": "main_router",
+      "type": "router",
+      "name": "Main Router",
+      "properties": {
+        "description": "Главный маршрутизатор сети",
+        "ip": "192.168.1.1"
+      },
+      "created_at": "2025-01-15T10:25:00"
+    },
+    {
+      "id": "core_switch",
+      "type": "switch",
+      "name": "Core Switch",
+      "properties": {
+        "description": "Центральный коммутатор",
+        "model": "Cisco Catalyst"
+      },
+      "created_at": "2025-01-15T10:30:00"
+    },
+    {
+      "id": "web_server",
+      "type": "server",
+      "name": "Web Server",
+      "properties": {
+        "description": "Физический веб-сервер",
+        "location": "Datacenter A"
+      },
+      "created_at": "2025-01-15T10:35:00"
+    }
+  ],
+  "relationships": [
+    {
+      "source_id": "app_py",
+      "target_id": "database_py",
+      "type": "calls",
+      "description": "Вызывает функции для работы с БД",
+      "created_at": "2025-01-15T11:00:00"
+    },
+    {
+      "source_id": "app_container",
+      "target_id": "app_py",
+      "type": "uses",
+      "description": "Запускает приложение внутри контейнера",
+      "created_at": "2025-01-15T11:05:00"
+    },
+    {
+      "source_id": "app_container",
+      "target_id": "postgres_db",
+      "type": "connects_to",
+      "description": "Подключается к базе данных",
+      "created_at": "2025-01-15T11:10:00"
+    },
+    {
+      "source_id": "nginx_proxy",
+      "target_id": "app_container",
+      "type": "routes_through",
+      "description": "Проксирует запросы к приложению",
+      "created_at": "2025-01-15T11:15:00"
+    },
+    {
+      "source_id": "web_server",
+      "target_id": "nginx_proxy",
+      "type": "provides",
+      "description": "Хостит контейнер Nginx",
+      "created_at": "2025-01-15T11:20:00"
+    },
+    {
+      "source_id": "web_server",
+      "target_id": "core_switch",
+      "type": "connects_to",
+      "description": "Подключен к коммутатору",
+      "created_at": "2025-01-15T11:25:00"
+    },
+    {
+      "source_id": "core_switch",
+      "target_id": "main_router",
+      "type": "connects_to",
+      "description": "Подключен к маршрутизатору",
+      "created_at": "2025-01-15T11:30:00"
+    },
+    {
+      "source_id": "postgres_db",
+      "target_id": "web_server",
+      "type": "depends_on",
+      "description": "Работает на том же сервере",
+      "created_at": "2025-01-15T11:35:00"
+    }
+  ],
+  "metadata": {
+    "version": "2.0",
+    "saved_at": "2025-11-22T13:44:53.145119"
+  }
+}
