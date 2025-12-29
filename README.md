@@ -4,7 +4,7 @@
 ![PyQt5](https://img.shields.io/badge/PyQt5-5.15+-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-**Система управления зависимостями инфраструктуры** — desktop-приложение для визуализации и управления зависимостями между компонентами IT-инфраструктуры.
+**Система управления зависимостями инфраструктуры** — desktop-приложение для визуализации и управления зависимостями между компонентами IT-инфраструктуры, Docker-контейнерами и Godot-проектами.
 
 [English version below](#english-version)
 
@@ -20,6 +20,11 @@
   - ⚡ Коммутаторы (Switches)
   - 🖥️ Серверы (Servers)
   - 💾 Базы данных (Databases)
+- **Поддержка объектов Godot Engine:**
+  - 🎬 Сцены (Scenes)
+  - 📜 Скрипты (Scripts)
+  - 📦 Ресурсы (Resources)
+  - ⚙️ Autoload-синглтоны
 
 ### Интерактивная визуализация
 - **Графическое представление зависимостей** с использованием NetworkX и Matplotlib
@@ -28,6 +33,13 @@
   - Плавное масштабирование колесом мыши
   - Панорамирование с помощью средней кнопки мыши или Shift+ЛКМ
   - Выделение связей при клике на элементы
+- **6 алгоритмов компоновки графа:**
+  - Пружинная (Spring) — физическая симуляция
+  - Круговая (Circular) — узлы по кругу
+  - Kamada-Kawai — минимизация энергии
+  - Спектральная (Spectral) — на основе собственных векторов
+  - Оболочка (Shell) — концентрические круги
+  - Иерархическая — древовидное расположение
 - **Различные формы узлов** для разных типов объектов
 - **4 цветовые схемы:** Default, Dark, Pastel, Vibrant
 - **Экспорт графа** в PNG с высоким разрешением (300 DPI)
@@ -36,6 +48,11 @@
 - **Импорт из конфигурационных файлов:**
   - Docker Compose (YAML)
   - Kubernetes (YAML)
+  - Godot-проекты (с анализом зависимостей)
+- **Фильтрация при импорте Godot:**
+  - Исключение текстур (.png, .jpg, .webp, .svg)
+  - Исключение аудио (.wav, .ogg, .mp3)
+  - Исключение шрифтов (.ttf, .otf, .woff)
 - **Сохранение и загрузка** проектов в JSON формате
 - **Многооконный интерфейс** — работа с несколькими проектами одновременно
 
@@ -213,6 +230,33 @@ chmod +x icon.sh
    - PersistentVolumeClaims как базы данных
    - Связи между компонентами
 
+#### Из Godot-проекта:
+1. **Файл → Импорт → Godot Project**
+2. Выберите папку с Godot-проектом (содержащую `project.godot`)
+3. В диалоге фильтрации выберите, что исключить:
+   - ☐ Текстуры — исключить изображения
+   - ☐ Аудио — исключить звуковые файлы
+   - ☐ Шрифты — исключить файлы шрифтов
+4. Нажмите **"Импортировать"**
+5. Приложение создаст:
+   - Сцены (.tscn) как объекты типа "godot_scene"
+   - Скрипты (.gd) как объекты типа "godot_script"
+   - Ресурсы (.tres) как объекты типа "godot_resource"
+   - Autoload-модули как объекты типа "godot_autoload"
+   - Зависимости между всеми компонентами
+
+### Выбор алгоритма компоновки
+
+1. Нажмите кнопку **"Компоновка"** на панели визуализации
+2. Выберите алгоритм из списка:
+   - **Пружинная (Spring)** — хорошо для общих графов
+   - **Круговая (Circular)** — узлы равномерно по кругу
+   - **Kamada-Kawai** — оптимизация расстояний
+   - **Спектральная (Spectral)** — хорошо для кластеров
+   - **Оболочка (Shell)** — концентрические уровни
+   - **Иерархическая** — для деревьев и DAG
+3. Нажмите **OK** для применения
+
 ### Экспорт графа
 
 1. Нажмите кнопку **"Экспорт PNG"**
@@ -246,6 +290,7 @@ chmod +x icon.sh
 dependency-manager/
 │
 ├── dependency_manager.py          # Основное приложение
+├── godot_analyzer.py              # Анализатор зависимостей Godot
 ├── requirements.txt               # Python зависимости
 ├── run_dependency_manager.sh      # Скрипт запуска
 ├── icon.sh                        # Скрипт создания ярлыка
@@ -299,6 +344,13 @@ update-desktop-database ~/.local/share/applications/
 # Или выйдите и войдите в систему
 # Или перезагрузите компьютер
 ```
+
+### Ошибки при импорте Godot-проекта
+
+- Убедитесь, что выбрана папка, содержащая файл `project.godot`
+- Проверьте, что проект создан в Godot 4.x (поддержка 3.x ограничена)
+- При больших проектах используйте фильтрацию для исключения текстур и аудио
+
 ---
 
 ## 📝 Лицензия
@@ -319,6 +371,11 @@ update-desktop-database ~/.local/share/applications/
   - ⚡ Switches
   - 🖥️ Servers
   - 💾 Databases
+- **Godot Engine object support:**
+  - 🎬 Scenes
+  - 📜 Scripts
+  - 📦 Resources
+  - ⚙️ Autoload singletons
 
 ### Interactive Visualization
 - **Graphical dependency representation** using NetworkX and Matplotlib
@@ -327,6 +384,13 @@ update-desktop-database ~/.local/share/applications/
   - Smooth zoom with mouse wheel
   - Pan with middle mouse button or Shift+LMB
   - Highlight connections on click
+- **6 graph layout algorithms:**
+  - Spring — force-directed layout
+  - Circular — nodes arranged in circle
+  - Kamada-Kawai — energy minimization
+  - Spectral — eigenvector-based
+  - Shell — concentric circles
+  - Hierarchical — tree-like arrangement
 - **Different node shapes** for different object types
 - **4 color schemes:** Default, Dark, Pastel, Vibrant
 - **Export graph** to high-resolution PNG (300 DPI)
@@ -335,6 +399,11 @@ update-desktop-database ~/.local/share/applications/
 - **Import from configuration files:**
   - Docker Compose (YAML)
   - Kubernetes (YAML)
+  - Godot projects (with dependency analysis)
+- **Godot import filtering:**
+  - Exclude textures (.png, .jpg, .webp, .svg)
+  - Exclude audio (.wav, .ogg, .mp3)
+  - Exclude fonts (.ttf, .otf, .woff)
 - **Save and load** projects in JSON format
 - **Multi-window interface** — work with multiple projects simultaneously
 
@@ -512,6 +581,33 @@ chmod +x icon.sh
    - PersistentVolumeClaims as databases
    - Relationships between components
 
+#### From Godot Project:
+1. **File → Import → Godot Project**
+2. Select folder with Godot project (containing `project.godot`)
+3. In filter dialog, choose what to exclude:
+   - ☐ Textures — exclude images
+   - ☐ Audio — exclude sound files
+   - ☐ Fonts — exclude font files
+4. Click **"Import"**
+5. Application creates:
+   - Scenes (.tscn) as "godot_scene" objects
+   - Scripts (.gd) as "godot_script" objects
+   - Resources (.tres) as "godot_resource" objects
+   - Autoload modules as "godot_autoload" objects
+   - Dependencies between all components
+
+### Choosing Layout Algorithm
+
+1. Click **"Layout"** button on visualization panel
+2. Select algorithm from list:
+   - **Spring** — good for general graphs
+   - **Circular** — nodes evenly around circle
+   - **Kamada-Kawai** — distance optimization
+   - **Spectral** — good for clusters
+   - **Shell** — concentric levels
+   - **Hierarchical** — for trees and DAGs
+3. Click **OK** to apply
+
 ### Graph Export
 
 1. Click **"Export PNG"** button
@@ -566,6 +662,12 @@ update-desktop-database ~/.local/share/applications/
 # Or reboot the computer
 ```
 
+### Errors When Importing Godot Project
+
+- Make sure to select folder containing `project.godot` file
+- Check that project was created in Godot 4.x (3.x support is limited)
+- For large projects, use filtering to exclude textures and audio
+
 ---
 
 ## 📁 Project Structure
@@ -574,6 +676,7 @@ update-desktop-database ~/.local/share/applications/
 dependency-manager/
 │
 ├── dependency_manager.py          # Main application
+├── godot_analyzer.py              # Godot dependency analyzer
 ├── requirements.txt               # Python dependencies
 ├── run_dependency_manager.sh      # Launch script
 ├── icon.sh                        # Desktop launcher creation script
